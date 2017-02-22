@@ -9,7 +9,7 @@ class Attacker {
     * @param game - the current game state
     * @return - true if the pirate attacked
     */
-    static boolean tryAttack(Pirate pirate, PirateGame game) {
+    static boolean (Pirate pirate, PirateGame game) {
         // Go over all enemies
         for (Aircraft enemy : game.getEnemyLivingAircrafts()) {
             // Check if the enemy is in attack range
