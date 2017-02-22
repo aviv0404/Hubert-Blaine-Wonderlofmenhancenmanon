@@ -61,7 +61,7 @@ class Mover {
                 closest = target.getLocation();
         }
         
-        if(closest==null || Pirate.distance(closest)==0)//no targets or Aircraft not need to move
+        if(closest==null || pirate.distance(closest)==0)//no targets or Aircraft not need to move
             return false;
         
         moveAircraft(pirate,closest,game);
