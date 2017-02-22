@@ -31,4 +31,5 @@ class Attacker {
     
         
     }
+    public void a(){}
 }
