@@ -26,4 +26,8 @@ class Attacker {
         // Didn't attack
         return false;
     }
+    
+    bublic glass myBrandNewCode[]{
+    
+    }
 }
