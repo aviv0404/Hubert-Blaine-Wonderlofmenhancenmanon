@@ -1,5 +1,6 @@
 package bots;
 import pirates.*;
+import java.util.List;
 
 /**
  * Agada bot :)
@@ -11,7 +12,7 @@ public class MyBot implements PirateBot {
     public void doTurn(PirateGame game) {
         if(firstTurn(game)) initFirstTurn();
         history.update(game);
-        decideStrategy(game).doTurn(history);
+        decideStrategy(game).doTurn(game,history);
     }
 
     private boolean firstTurn(PirateGame game) {
