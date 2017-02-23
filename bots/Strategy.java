@@ -2,5 +2,5 @@ package bots;
 import pirates.*;
 
 interface Strategy {
-    public void doTurn(History history);
+    public void doTurn(PirateGame game,History history);
 }
