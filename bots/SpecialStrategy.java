@@ -18,67 +18,8 @@ class SpecialStrategy implements Strategy {
                 // every else if here represents a different case \ situation
                 if (howManyIslandsOurscounter >= game.getAllIslands().size()) {
                     Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i), game.getEnemyLivingPirates(), game);
-                } else if (howManyIslandsNonescounter > 0 || howManyIslandsEnemyscounter > 0) {
-                    if (game.getNeutralIslands().size() > 0) {
-                        if (i < numMyLivingPirates - 1) {
-                            Mover.moveAircraft(game.getMyLivingPirates().get(i), game.getNeutralIslands().get(i % game.getNeutralIslands().size()), game);
-                        } else {
-                            
-                                Player p = game.getMyself();
-                                if (p.turnsToDecoyReload == 0) {
-                                    game.debug("here");
-                                    game.decoy(game.getMyLivingPirates().get(i));
-                                } else {
-                                    attackDrones(game, i);
-                                }
-                            
-                            //Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i),game.getEnemyCities(),game);
-                        }
-
-                    } else if (game.getEnemyIslands().size() > 0) {
-                        if (i < numMyLivingPirates - 1) {
-                            Mover.moveAircraft(game.getMyLivingPirates().get(i), game.getEnemyIslands().get(i % game.getEnemyIslands().size()), game);
-                        } else {
-                            
-                               Player p = game.getMyself();
-                                if (p.turnsToDecoyReload == 0) {
-                                    game.debug("here");
-                                    game.decoy(game.getMyLivingPirates().get(i));
-                                } else {
-                                    attackDrones(game, i);
-                                }
-                            
-                        }
-
-                    } else if (howManyIslandsOurscounter > 0) {
-                        if (i < numMyLivingPirates - 1) {
-                            Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i), game.getEnemyLivingPirates(), game);
-                        } else {
-                                Player p = game.getMyself();
-                                if (p.turnsToDecoyReload == 0) {
-                                    game.debug("here");
-                                    game.decoy(game.getMyLivingPirates().get(i));
-                                } else {
-                                    attackDrones(game, i);
-                                }
-                            
-                        }
-                    } else {
-                        if (i < numMyLivingPirates - 1) {
-                            
-                                Player p = game.getMyself();
-                                if (p.turnsToDecoyReload == 0) {
-                                    game.debug("here");
-                                    game.decoy(game.getMyLivingPirates().get(i));
-                                } else {
-                                    attackDrones(game, i);
-                                }
-                            
-                        } else {
-                            Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i), game.getEnemyLivingDrones(), game);
-                        }
-
                     }
+
                 }
             }
             //2
@@ -118,5 +59,3 @@ class SpecialStrategy implements Strategy {
                 howManyIslandsEnemyscounter++;
             }
         }
-    }
-}
