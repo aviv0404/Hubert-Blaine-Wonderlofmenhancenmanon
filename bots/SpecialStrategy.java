@@ -18,51 +18,88 @@ class SpecialStrategy implements Strategy {
                 // every else if here represents a different case \ situation
                 if (howManyIslandsOurscounter >= game.getAllIslands().size()) {
                     Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i), game.getEnemyLivingPirates(), game);
-                 }else if (howManyIslandsNonescounter > 0 || howManyIslandsEnemyscounter > 0) {
+                } else if (howManyIslandsNonescounter > 0 || howManyIslandsEnemyscounter > 0) {
                     if (game.getNeutralIslands().size() > 0) {
-                        if (i < numMyLivingPirates-1) {
+                        if (i < numMyLivingPirates - 1) {
                             Mover.moveAircraft(game.getMyLivingPirates().get(i), game.getNeutralIslands().get(i % game.getNeutralIslands().size()), game);
                         } else {
-                            attackDrones(game,i);
+                            
+                                Player p = game.getMyself();
+                                if (p.turnsToDecoyReload == 0) {
+                                    game.debug("here");
+                                    game.decoy(game.getMyLivingPirates().get(i));
+                                } else {
+                                    attackDrones(game, i);
+                                }
+                            
                             //Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i),game.getEnemyCities(),game);
                         }
 
-                    }else if(game.getEnemyIslands().size() >0){
-                        if (i < numMyLivingPirates-1) {
+                    } else if (game.getEnemyIslands().size() > 0) {
+                        if (i < numMyLivingPirates - 1) {
                             Mover.moveAircraft(game.getMyLivingPirates().get(i), game.getEnemyIslands().get(i % game.getEnemyIslands().size()), game);
                         } else {
-                            attackDrones(game,i);
+                            
+                               Player p = game.getMyself();
+                                if (p.turnsToDecoyReload == 0) {
+                                    game.debug("here");
+                                    game.decoy(game.getMyLivingPirates().get(i));
+                                } else {
+                                    attackDrones(game, i);
+                                }
+                            
                         }
-                    }
-                    
-                }else if(howManyIslandsOurscounter > 0 ){
-                    if(i < numMyLivingPirates-1){
-                    Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i),game.getEnemyLivingPirates(),game);
-                    }else{
-                         attackDrones(game,i);
-                    }
-                } else {
-                    if (i < numMyLivingPirates-1) {
-                        attackDrones(game,i);
-                    } else {
-                        Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i), game.getEnemyLivingDrones(), game);
-                    }
 
+                    } else if (howManyIslandsOurscounter > 0) {
+                        if (i < numMyLivingPirates - 1) {
+                            Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i), game.getEnemyLivingPirates(), game);
+                        } else {
+                                Player p = game.getMyself();
+                                if (p.turnsToDecoyReload == 0) {
+                                    game.debug("here");
+                                    game.decoy(game.getMyLivingPirates().get(i));
+                                } else {
+                                    attackDrones(game, i);
+                                }
+                            
+                        }
+                    } else {
+                        if (i < numMyLivingPirates - 1) {
+                            
+                                Player p = game.getMyself();
+                                if (p.turnsToDecoyReload == 0) {
+                                    game.debug("here");
+                                    game.decoy(game.getMyLivingPirates().get(i));
+                                } else {
+                                    attackDrones(game, i);
+                                }
+                            
+                        } else {
+                            Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i), game.getEnemyLivingDrones(), game);
+                        }
+
+                    }
                 }
             }
+            //2
         }
-        //2
-        for (int i = 0; i < game.getMyLivingDrones().size(); i++) {
-            Mover.moveAircraft(game.getMyLivingDrones().get(i), game.getMyCities().get(0), game);
+            for (int i = 0; i < game.getMyLivingDrones().size(); i++) {
+                Mover.moveAircraft(game.getMyLivingDrones().get(i), game.getMyCities().get(0), game);
+            }
         }
-    }
     
-    private void attackDrones(PirateGame game,int i){
+    
+
+    private void follow(Aircraft follower, Aircraft followed, PirateGame game) {
+        Mover.moveAircraft(follower, followed.location, game);
+    }
+
+    private void attackDrones(PirateGame game, int i) {
         Mover.moveAircraftToClosestToAnotherMapObject(
-                                game.getMyLivingPirates().get(i),
-                                game.getEnemyLivingDrones(),
-                                game.getEnemyCities().get(0),
-                                game);
+                game.getMyLivingPirates().get(i),
+                game.getEnemyLivingDrones(),
+                game.getEnemyCities().get(0),
+                game);
     }
 
     private void updateIslandsStatus(PirateGame game) {
