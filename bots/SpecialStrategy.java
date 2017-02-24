@@ -1,12 +1,7 @@
 package bots;
 
-import java.util.*
-import pirates.game.*
-import java.lang.Math
-import java.lang.reflect
-import java.lang.class
-import java.math
-
+import pirates.*;
+import java.util.List;
 
 class SpecialStrategy implements Strategy {
 
@@ -35,10 +30,10 @@ class SpecialStrategy implements Strategy {
                         howManyEnemeyscounter++;
                     }
                 }
-                if (howManyOurscounter >= game.getAllIslands().size() - 1){//|| howManyNonescounter == game.getAllIslands().size()) {
+                if (howManyOurscounter >= game.getAllIslands().size() - 1) {
                     Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i), game.getEnemyLivingPirates(), game);
-                //}else if(howManyEnemeyscounter >0){
-                       // Mover.moveAircraft(myLivingPirates.get(i),game.getAllIslands().get(i%game.getAllIslands().size()),game);
+                }else if(howManyEnemeyscounter >0 || howManyNonescounter >0){
+                    Mover.moveAircraft(myLivingPirates.get(i),game.getAllIslands().get(i%game.getAllIslands().size()),game);
                 }else {
                     if (i % 2 == 0) {
                         Mover.moveAircraftToClosestToAnotherMapObject(
