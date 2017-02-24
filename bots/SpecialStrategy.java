@@ -1,54 +1,53 @@
 package bots;
 
-import java.util.*
-import pirates.game.*
-import java.lang.Math
-import java.lang.reflect
-import java.lang.class
-import java.math
-
+import pirates.*;
+import java.util.List;
 
 class SpecialStrategy implements Strategy {
-    //TODO: %2 to every move
+
+    private int howManyIslandsOurscounter;
+    private int howManyIslandsEnemyscounter;
+    private int howManyIslandsNonescounter;
+
     public void doTurn(PirateGame game, History history) {
+        updateIslandsStatus(game);
         game.debug("Activated: SpecialStrategy");
-        List<Pirate> myLivingPirates = game.getMyLivingPirates();
-        List<Drone> enemyLivingDrones = game.getEnemyLivingDrones();
-        List<City> enemyCities = game.getEnemyCities();
-        int numMyLivingPirates = myLivingPirates.size();
-        game.debug(numMyLivingPirates);
-        //1
+        int numMyLivingPirates = game.getMyLivingPirates().size();
         for (int i = 0; i < numMyLivingPirates; i++) {
-            if (!Attacker.tryAttack(myLivingPirates.get(i), game)) {
-                int howManyOurscounter = 0;
-                int howManyNonescounter = 0;
-                int howManyEnemeyscounter = 0;
-                for (int j = 0; j < game.getAllIslands().size(); j++) {
-                    Player p = game.getAllIslands().get(j).owner;
-                    if (p.id == 1) {
-                        howManyOurscounter++;
-                    }
-                    if(p.id == -1){
-                        howManyNonescounter++;
-                    }
-                    if(p.id == 0){
-                        howManyEnemeyscounter++;
-                    }
-                }
-                if (howManyOurscounter >= game.getAllIslands().size() - 1){//|| howManyNonescounter == game.getAllIslands().size()) {
+            if (!Attacker.tryAttack(game.getMyLivingPirates().get(i), game)) {
+                // every else if here represents a different case \ situation
+                if (howManyIslandsOurscounter >= game.getAllIslands().size()) {
                     Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i), game.getEnemyLivingPirates(), game);
-                //}else if(howManyEnemeyscounter >0){
-                       // Mover.moveAircraft(myLivingPirates.get(i),game.getAllIslands().get(i%game.getAllIslands().size()),game);
-                }else {
-                    if (i % 2 == 0) {
-                        Mover.moveAircraftToClosestToAnotherMapObject(
-                                myLivingPirates.get(i),
-                                enemyLivingDrones,
-                                enemyCities.get(0),
-                                game);
-                    } else {
-                        Mover.moveAircraftToClosest(myLivingPirates.get(i), enemyLivingDrones, game);
+                 }else if (howManyIslandsNonescounter > 0 || howManyIslandsEnemyscounter > 0) {
+                    if (game.getNeutralIslands().size() > 0) {
+                        if (i < numMyLivingPirates-1) {
+                            Mover.moveAircraft(game.getMyLivingPirates().get(i), game.getNeutralIslands().get(i % game.getNeutralIslands().size()), game);
+                        } else {
+                            attackDrones(game,i);
+                            //Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i),game.getEnemyCities(),game);
+                        }
+
+                    }else if(game.getEnemyIslands().size() >0){
+                        if (i < numMyLivingPirates-1) {
+                            Mover.moveAircraft(game.getMyLivingPirates().get(i), game.getEnemyIslands().get(i % game.getEnemyIslands().size()), game);
+                        } else {
+                            attackDrones(game,i);
+                        }
                     }
+                    
+                }else if(howManyIslandsOurscounter > 0 ){
+                    if(i < numMyLivingPirates-1){
+                    Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i),game.getEnemyLivingPirates(),game);
+                    }else{
+                         attackDrones(game,i);
+                    }
+                } else {
+                    if (i < numMyLivingPirates-1) {
+                        attackDrones(game,i);
+                    } else {
+                        Mover.moveAircraftToClosest(game.getMyLivingPirates().get(i), game.getEnemyLivingDrones(), game);
+                    }
+
                 }
             }
         }
@@ -56,7 +55,31 @@ class SpecialStrategy implements Strategy {
         for (int i = 0; i < game.getMyLivingDrones().size(); i++) {
             Mover.moveAircraft(game.getMyLivingDrones().get(i), game.getMyCities().get(0), game);
         }
-        //3
-        game.debug(game.getAllIslands().get(0).owner.id);
+    }
+    
+    private void attackDrones(PirateGame game,int i){
+        Mover.moveAircraftToClosestToAnotherMapObject(
+                                game.getMyLivingPirates().get(i),
+                                game.getEnemyLivingDrones(),
+                                game.getEnemyCities().get(0),
+                                game);
+    }
+
+    private void updateIslandsStatus(PirateGame game) {
+        howManyIslandsOurscounter = 0;
+        howManyIslandsEnemyscounter = 0;
+        howManyIslandsNonescounter = 0;
+        for (int j = 0; j < game.getAllIslands().size(); j++) {
+            Player p = game.getAllIslands().get(j).owner;
+            if (p.id == 1) {
+                howManyIslandsOurscounter++;
+            }
+            if (p.id == -1) {
+                howManyIslandsNonescounter++;
+            }
+            if (p.id == 0) {
+                howManyIslandsEnemyscounter++;
+            }
+        }
     }
 }
