@@ -15,11 +15,11 @@ class Mover {
      * @param destination - the destination of the aircraft
      * @param game - the current game state
      */
-    static void moveAircraft(Aircraft aircraft, MapObject destination, PirateGame game) {
+    static void moveAircraft(Pirate pirate, MapObject destination, PirateGame game) {
         // Get sail options
-        List<Location> sailOptions = game.getSailOptions(aircraft, destination);
+        List<Location> sailOptions = game.getSailOptions(pirate, destination);
         // Set sail!
-        game.setSail(aircraft, sailOptions.get(0));
+        game.setSail(pirate, sailOptions.get(0));
     }
     
     
@@ -36,27 +36,27 @@ class Mover {
      */
     
     //TODO: Think of a shorter name
-    static <T extends MapObject> boolean moveAircraftToClosest(Aircraft aircraft, List<T> targets, PirateGame game)
+    static <T extends MapObject> boolean moveAircraftToClosest(Pirate pirate, List<T> targets, PirateGame game)
     {   
         //first closer location is null location
         Location closest = null;
         for(T target:targets)
         {
-            if(closest==null || aircraft.distance(closest)>aircraft.distance(target))
+            if(closest==null || aircraft.distance(closest)>pirate.distance(target))
                 closest = target.getLocation();
         }
         
-        if(closest==null || aircraft.distance(closest)==0)//no targets or Aircraft not need to move
+        if(closest==null || pirate.distance(closest)==0)//no targets or Aircraft not need to move
             return false;
         
-        moveAircraft(aircraft,closest,game);
+        moveAircraft(pirate,closest,game);
         return true;
    }
     
     
     
     //TODO: Think of a shorter name
-    static <T extends MapObject> boolean moveAircraftToClosestToAnotherMapObject(Aircraft aircraft, List<T> targets, MapObject mapObject,PirateGame game)
+    static <T extends MapObject> boolean moveAircraftToClosestToAnotherMapObject(Pirate pirate, List<T> targets, MapObject mapObject,PirateGame game)
     {   
         //first closer location is null location
         Location closest = null;
@@ -66,10 +66,10 @@ class Mover {
                 closest = target.getLocation();
         }
         
-        if(closest==null || aircraft.distance(closest)==0)//no targets or Aircraft not need to move
+        if(closest==null || pirate.distance(closest)==0)//no targets or Aircraft not need to move
             return false;
         
-        moveAircraft(aircraft,closest,game);
+        moveAircraft(pirate,closest,game);
         return true;
    }
     
