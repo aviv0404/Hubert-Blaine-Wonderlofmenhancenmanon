@@ -18,17 +18,25 @@ class History {
         List<Location> thisTurnEnemyPiratesLocations = enemysPiratesLocation.get(enemysPiratesLocation.size()-1);
         List<Integer> thisTurnEnemyPiratesHealth = enemysPiratesHealth.get(enemysPiratesLocation.size()-1);
         for (Pirate pirate : game.getEnemyLivingPirates()) {
-            thisTurnEnemyPiratesLocations.add(pirate.location);
+            thisTurnEnemyPiratesLocations.add(new Location(pirate.location.row,pirate.location.col));//create copy
             thisTurnEnemyPiratesHealth.add(pirate.currentHealth);
             
         }
     }
-    public List<Location> getEnemyPiratesLocatinByTurn(int turn)
+    public List<Location> getEnemyPiratesLocatinByTurn(int turn)//return copy
     {
-        return enemysPiratesLocation.get(turn);
+        List<Location> copy = new ArrayList<>();
+        for (Location l : enemysPiratesLocation.get(turn)) {
+            copy.add(l);
+        }
+        return copy;
     }
-    public List<Integer> getEnemyPiratesHealthByTurn(int turn)
+    public List<Integer> getEnemyPiratesHealthByTurn(int turn)//return copy
     {
-        return enemysPiratesHealth.get(turn);
+        List<Integer> copy = new ArrayList<>();
+        for (Integer i : enemysPiratesHealth.get(turn)) {
+            copy.add(i);
+        }
+        return copy;
     }
 }
