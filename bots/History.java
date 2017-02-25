@@ -23,7 +23,7 @@ class History {
             
         }
     }
-    public List<Location> getEnemyPiratesLocatinByTurn(int turn)//return copy
+    public List<Location> getEnemyPiratesLocatin(int turn)//return copy
     {
         List<Location> copy = new ArrayList<>();
         for (Location l : enemysPiratesLocation.get(turn)) {
@@ -31,7 +31,7 @@ class History {
         }
         return copy;
     }
-    public List<Integer> getEnemyPiratesHealthByTurn(int turn)//return copy
+    public List<Integer> getEnemyPiratesHealth(int turn)//return copy
     {
         List<Integer> copy = new ArrayList<>();
         for (Integer i : enemysPiratesHealth.get(turn)) {
