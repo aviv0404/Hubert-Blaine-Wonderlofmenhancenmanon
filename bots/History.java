@@ -103,3 +103,19 @@ class History {
         return id;
     }
 }
+
+
+
+//this one works- 
+package bots;
+import pirates.*;
+
+
+import java.util.*;
+
+class History {
+    static ArrayList<List<Pirate>> enemyPirates;
+    void update(PirateGame game) {
+        //enemyPirates.add(game.getTurn(),game.getAllEnemyPirates());
+    }
+}
