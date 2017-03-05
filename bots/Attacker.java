@@ -27,14 +27,12 @@ class Attacker {
     }
     
     static boolean tryAttackDrones(Pirate pirate,PirateGame game){
-        if (!game.getEnemyLivingDrones().isEmpty()){
             for (Drone drone : game.getEnemyLivingDrones()){
                 if (pirate.inAttackRange(drone)){
                     game.attack(pirate,drone);
                     return true;
                 }
             }
-        }
         return false;
     }
 }
