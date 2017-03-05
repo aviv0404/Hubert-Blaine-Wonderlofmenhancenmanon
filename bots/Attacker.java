@@ -13,7 +13,7 @@ class Attacker {
         // Go over all enemies
         for (Aircraft enemy : game.getEnemyLivingAircrafts()) {
             // Check if the enemy is in attack range
-            if (pirate.inAttackRange(enemy)) {
+            if (pirate.inAttackRange(enemy) && !History.isEnemyPirateStateNothing(game,pirate)) {
                 // Fire!
                 game.attack(pirate, enemy);
                 // Print a message
