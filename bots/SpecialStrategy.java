@@ -7,38 +7,48 @@ class SpecialStrategy implements Strategy {
 
     private PirateGame game;
     private Player player;
+    private final History history;
+    private final Mover mover;
 
-    public SpecialStrategy() {
+    public SpecialStrategy(History history) {
+        this.history = history;
+        mover = new Mover(0);
     }
 
     public void doTurn(PirateGame game, History history) {
+        List< Pirate> myLivingPirates = game.getMyLivingPirates();
+        
         game.debug("Activated: SpecialStrategy");
         player = game.getMyself();
         this.game = game;
-        List< Pirate> myLivingPirates = game.getMyLivingPirates();
         sendDecoy(myLivingPirates);
         decoyMechanics();
         prioritiesActions(myLivingPirates);
         //smartDrones();
         sendDrones();
+        smartSailOptions();
 
         //game.debug(myLivingPirates.size());
     }
 
+    //changes sailOptions from 0 to 1 whenever we repeat ourselves, changes it back after n turns
+    private void smartSailOptions(){
+        if (history.doWeRepeat(4, 2)){// 1 4 | 4 2 | 3 4 |
+            mover.setSailOption(1);
+        }else{
+            mover.setSailOption(0);
+        }
+    }
     //TODO: decide when we should defend Cities or attack islands or do anything else, to make it smarter
     // sendToCities HAS to be on top of sendToNotAsIslands or else it will not work properly
     private void prioritiesActions(List<Pirate> myLivingPirates) {
         evade(myLivingPirates);
-        game.debug(myLivingPirates);
         if (!game.getNotMyIslands().isEmpty()) {
             defendCities(myLivingPirates);
-            game.debug(myLivingPirates);
             sendToNotAsIslands(myLivingPirates);
-            game.debug(myLivingPirates);
         } else {
             //defendMyIslands(myLivingPirates);
             attack(myLivingPirates);
-            game.debug(myLivingPirates);
         }
     }
 
@@ -117,7 +127,7 @@ class SpecialStrategy implements Strategy {
             }
             if (counterEnemy > counterAlly) {
                 //Mover.goToTheOppositeDirectionOf(me,piratesInRange,5,game);
-                Mover.moveAircraftToClosest(me, game.getMyLivingPirates(), game);
+                Mover.moveAircraftToClosest(me, game.getMyCities(), game);
                 iterMy.remove();
                 return true;
             }
