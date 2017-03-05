@@ -6,7 +6,7 @@ import java.util.*;
 
 class History {
 
-    static ArrayList<List<Pirate>> enemyPirates = new ArrayList<>();
+    private ArrayList<List<Pirate>> enemyPirates = new ArrayList<>();
 
     private List<List<Location>> enemysPiratesLocation;
 
@@ -68,7 +68,7 @@ class History {
     }
 
 
-    static boolean isEnemyPirateStateNothing(PirateGame game, Pirate pirate) {
+     private boolean isEnemyPirateStateNothing(PirateGame game, Pirate pirate) {
         int id = getPirateId(game, pirate);
         for (List<Pirate> enemyPirate : enemyPirates) {
             if (enemyPirate.get(id).getLocation().compareTo(enemyPirate.get(id).initialLocation) != 0) {
@@ -81,7 +81,7 @@ class History {
     }
 
 
-    static int getPirateId(PirateGame game, Pirate pirate) {
+    private int getPirateId(PirateGame game, Pirate pirate) {
         int id = 0;
         for (List<Pirate> pirateList : enemyPirates) {
             for (Pirate p : pirateList) {
