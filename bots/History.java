@@ -1,4 +1,71 @@
 package bots;
+import pirates.*;
+
+
+import java.util.*;
+
+class History {
+    
+    static ArrayList<List<Pirate>> myPirates;
+    public History(){
+        myPirates = new ArrayList<>();
+    }
+    private PirateGame game;
+    void update(List<Pirate> mylivingPirates, PirateGame game) {
+        this.game = game;
+        if (mylivingPirates !=null){
+            myPirates.add(mylivingPirates);
+        }
+    }
+    
+    /*
+    *  do we repeat ourselves? 
+    * @param n how many turns do you want to jump forward (use %2 numbers)
+    */
+    public boolean doWeRepeat(int repeatTimes,int n){
+        //game.debug(myPirates);
+        int repeatCounter = 0;
+        Location nextNLocations = null;
+        Location currentLocation = null;
+        while (true){
+            if (repeatCounter >= repeatTimes){
+                myPirates = new ArrayList<>();
+                return true;
+            }else{
+            for (int i = 0; i < myPirates.size(); i++) {
+                for (Pirate currentPirate : myPirates.get(i)){
+                    currentLocation = currentPirate.location;
+                    if (i+n < myPirates.size()){
+                        for (Pirate nextPirate : myPirates.get(i+n)){
+                            nextNLocations = nextPirate.location;
+                            if (currentLocation.col == nextNLocations.col && currentLocation.row == nextNLocations.row){
+                                repeatCounter++;
+                                //game.debug("counter: " + repeatCounter);
+                                break;
+                            }
+                        }
+                    }
+                    if (repeatCounter >= repeatTimes){
+                        myPirates = new ArrayList<>();
+                        return true;
+                    }
+                    
+                }
+            }
+                
+            }
+            game.debug("false");
+            return false;
+        }
+    }
+}
+/*
+
+
+
+
+
+package bots;
 
 import pirates.*;
 
@@ -119,3 +186,4 @@ class History {
         //enemyPirates.add(game.getTurn(),game.getAllEnemyPirates());
     }
 }
+*/
