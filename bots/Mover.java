@@ -5,6 +5,8 @@ import java.util.List;
 import pirates.*;
 
 class Mover {
+    
+    protected static int sailOption = 0;
 
     /**
      * Moves the aircraft towards the destination.
@@ -14,7 +16,12 @@ class Mover {
      * @param game - the current game state
      */
      
-         
+    public Mover(int sailOption){
+        Mover.sailOption = sailOption;
+    }
+    public void setSailOption(int n){
+        sailOption = n;
+    }
      
     static void moveAircraft(Aircraft aircraft, MapObject destination, int i, PirateGame game) {
         // Get sail options
@@ -28,7 +35,7 @@ class Mover {
 
     static void moveAircraft(Aircraft aircraft, MapObject destination, PirateGame game) {
         // Get sail options
-        moveAircraft(aircraft, destination, 0, game);
+        moveAircraft(aircraft, destination, sailOption, game);
     }
 
     static <T extends MapObject> MapObject getClosest(MapObject mapObject, List<T> list) {

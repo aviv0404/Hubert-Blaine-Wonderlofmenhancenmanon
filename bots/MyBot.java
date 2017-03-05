@@ -13,7 +13,7 @@ public class MyBot implements PirateBot {
     public void doTurn(PirateGame game) {
         
         if(firstTurn(game)) initFirstTurn();
-        history.update(game);
+        history.update(game.getMyLivingPirates(),game);
         if(game.getTurn() == 1){
             strategy = decideStrategy(game);
         }
@@ -37,10 +37,10 @@ public class MyBot implements PirateBot {
             return new DefendStrategy();
         }
         if (game.getMyCities().size() > 0 && game.getEnemyCities().size() > 0){
-            return new SpecialStrategy();
+            return new SpecialStrategy(history);
         }
         if (game.getEnemyCities().size() == 0 && game.getMyCities().size() == 0){
-            return new SpecialStrategy();
+            return new SpecialStrategy(history);
         }
         return null;
     }
