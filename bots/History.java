@@ -21,6 +21,10 @@ class History {
 
     }
 
+    public History() {
+        
+    }
+
 
     void update(PirateGame game)
 
@@ -68,7 +72,11 @@ class History {
     }
 
 
-     private boolean isEnemyPirateStateNothing(PirateGame game, Pirate pirate) {
+    public ArrayList<List<Pirate>> getEnemyPirates() {
+        return enemyPirates;
+    }
+
+    private boolean isEnemyPirateStateNothing(PirateGame game, Pirate pirate) {
         int id = getPirateId(game, pirate);
         for (List<Pirate> enemyPirate : enemyPirates) {
             if (enemyPirate.get(id).getLocation().compareTo(enemyPirate.get(id).initialLocation) != 0) {
@@ -77,6 +85,7 @@ class History {
         }
         game.debug("true");
         return true;
+
 
     }
 
