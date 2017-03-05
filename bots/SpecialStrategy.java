@@ -154,9 +154,15 @@ class SpecialStrategy implements Strategy {
             if (!game.getEnemyLivingDrones().isEmpty()) {
                 Drone closestDroneToCity = (Drone) Mover.getClosest(city, game.getEnemyLivingDrones());
                 closestPirateToCity = (Pirate) Mover.getClosest(city, mylivingPirates);
-                if (closestPirateToCity.distance(city)/2 < closestDroneToCity.distance(city)){
-                    if (!Attacker.tryAttackDrones(closestPirateToCity, game)){
-                        Mover.moveAircraft(closestPirateToCity, closestDroneToCity,1, game);
+                
+                if (closestDroneToCity != null && closestPirateToCity != null) {
+                    if (closestPirateToCity.distance(city) / 2 < closestDroneToCity.distance(city)) {
+                        if (Attacker.tryAttackDrones(closestPirateToCity, game)) {
+                            break;
+                        }else{
+                            Mover.moveAircraft(closestPirateToCity, closestDroneToCity, 1, game);
+                            break;
+                        }
                     }
                 }
             }
@@ -299,7 +305,7 @@ class SpecialStrategy implements Strategy {
                 Mover.moveAircraftToClosest(drone, game.getNeutralCities(), 1, game);
             } else if (game.getMyCities().size() > 0 && game.getNeutralCities().size() > 0) {
                 Mover.moveAircraftToClosest(drone, game.getNeutralCities(), 1, game);
-            }else{
+            } else {
                 Mover.moveAircraftToClosest(drone, game.getMyCities(), 1, game);
             }
 
