@@ -17,20 +17,66 @@ class SpecialStrategy implements Strategy {
 
     public void doTurn(PirateGame game, History history) {
         List< Pirate> myLivingPirates = game.getMyLivingPirates();
-        
         game.debug("Activated: SpecialStrategy");
         player = game.getMyself();
         this.game = game;
+        
         sendDecoy(myLivingPirates);
         decoyMechanics();
+        
         prioritiesActions(myLivingPirates);
-        //smartDrones();
+        
         sendDrones();
         smartSailOptions();
 
         //game.debug(myLivingPirates.size());
     }
-
+    
+    private void defendCitiesPaintVERSION(List<Pirate> myLivingPirates){
+        /*
+        for (Pirate pirate : myLivingPirates){
+            if (!Attacker.tryAttack(pirate,game) && !pirate.hasPaintball){
+                Mover.moveAircraftToClosest(pirate, game.getAvailablePaintballs(),game);
+            }
+        }
+        */
+        Pirate closestPirateToCity = null;
+        for (City city : game.getNotMyCities()) {
+            if (!game.getEnemyLivingDrones().isEmpty()) {
+                Drone closestDroneToCity = (Drone) Mover.getClosest(city, game.getEnemyLivingDrones());
+                closestPirateToCity = (Pirate) Mover.getClosest(city, myLivingPirates);
+                
+                if (closestDroneToCity != null && closestPirateToCity != null) {
+                    if (closestPirateToCity.distance(city) / 2 < closestDroneToCity.distance(city) && closestPirateToCity.hasPaintball) {
+                        if (Attacker.tryAttackDrones(closestPirateToCity, game)) {
+                            break;
+                        }else{
+                            Mover.moveAircraft(closestPirateToCity, closestDroneToCity, 1, game);
+                            break;
+                        }
+                    }
+                    else if (((Island)Mover.getClosest(city,game.getAllIslands())).owner.id <=0){
+                        if (!Attacker.tryAttack(closestPirateToCity,game)){
+                                Mover.moveAircraftToClosestToAnotherMapObject(closestPirateToCity,game.getNotMyIslands(),city,game);
+                                break;
+                                
+                            }
+                        }
+                    
+                    else if (!closestPirateToCity.hasPaintball){
+                        if (!Attacker.tryAttack(closestPirateToCity,game)){
+                        Mover.moveAircraftToClosestToAnotherMapObject(closestPirateToCity, game.getAvailablePaintballs(),city,game);
+                        }
+                        break;
+                    }
+                    }
+                }
+            }
+        
+        if (closestPirateToCity!=null){
+            myLivingPirates.remove(closestPirateToCity);
+        }
+    }
     //changes sailOptions from 0 to 1 whenever we repeat ourselves, changes it back after n turns
     private void smartSailOptions(){
         if (history.doWeRepeat(4, 2)){// 1 4 | 4 2 | 3 4 |
@@ -44,7 +90,11 @@ class SpecialStrategy implements Strategy {
     private void prioritiesActions(List<Pirate> myLivingPirates) {
         evade(myLivingPirates);
         if (!game.getNotMyIslands().isEmpty()) {
-            defendCities(myLivingPirates);
+            if (game.getAllPaintballs().isEmpty()){
+                defendCities(myLivingPirates);
+            }else{
+                defendCitiesPaintVERSION(myLivingPirates);   
+            }
             sendToNotAsIslands(myLivingPirates);
         } else {
             //defendMyIslands(myLivingPirates);
